@@ -109,7 +109,7 @@ class AffineTransform {
       const __m128i lo = _mm256_extracti128_si256(sum, 0);
       const __m128i hi = _mm256_extracti128_si256(sum, 1);
       output[i] = _mm_cvtsi128_si32(lo) + _mm_cvtsi128_si32(hi);
-#elif defined(USE_SSE41)
+#elif defined(USE_SSE41) && !defined(IS_ARM)
       __m128i sum = _mm_cvtsi32_si128(biases_[i]);
       const auto row = reinterpret_cast<const __m128i*>(&weights_[offset]);
       for (IndexType j = 0; j < kNumChunks; ++j) {

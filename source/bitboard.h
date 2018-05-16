@@ -20,7 +20,7 @@ namespace Bitboards { void init(); }
 
 struct alignas(16) Bitboard
 {
-#if defined (USE_SSE2)
+#if defined (USE_SSE2) && !defined(IS_ARM)
 	union
 	{
 		// 64bitずつとして扱うとき用
@@ -37,7 +37,7 @@ struct alignas(16) Bitboard
 	u64 p[2];
 #endif
 
-#if defined (USE_SSE2)
+#if defined (USE_SSE2) && !defined(IS_ARM)
 	// SSE2が使えるときは代入等においてはSSE2を使ったコピーがなされて欲しい。
 
 	Bitboard& operator = (const Bitboard& rhs) { _mm_store_si128(&this->m, rhs.m); return *this; }
@@ -111,7 +111,7 @@ struct alignas(16) Bitboard
 
 	// 代入型演算子
 
-#ifdef USE_SSE2
+#if defined(USE_SSE2) && !defined(IS_ARM)
 	Bitboard& operator |= (const Bitboard& b1) { this->m = _mm_or_si128( m, b1.m); return *this; }
 	Bitboard& operator &= (const Bitboard& b1) { this->m = _mm_and_si128(m, b1.m); return *this; }
 	Bitboard& operator ^= (const Bitboard& b1) { this->m = _mm_xor_si128(m, b1.m); return *this; }
@@ -163,7 +163,7 @@ struct alignas(16) Bitboard
 // --- Bitboardの実装
 
 inline Bitboard::Bitboard(u64 p0, u64 p1) :
-#if defined(USE_SSE2)
+#if defined(USE_SSE2) && !defined(IS_ARM)
 	// この命令、引数の順に注意。
 	m( _mm_set_epi64x(p1,p0))
 #else
@@ -174,7 +174,7 @@ inline Bitboard::Bitboard(u64 p0, u64 p1) :
 // 値を直接代入する。
 inline void Bitboard::set(u64 p0, u64 p1)
 {
-#if defined(USE_SSE2)
+#if defined(USE_SSE2) && !defined(IS_ARM)
 	m = _mm_set_epi64x(p1,p0);
 #else
 	p[0] = p0; p[1] = p1;
@@ -185,7 +185,7 @@ inline void Bitboard::set(u64 p0, u64 p1)
 
 inline Bitboard::operator bool() const
 {
-#if defined(USE_SSE41)
+#if defined(USE_SSE41) && !defined(IS_ARM)
 	return !_mm_testz_si128(m, m);
 #else
 	return (this->merge() ? true : false);
@@ -194,7 +194,7 @@ inline Bitboard::operator bool() const
 
 inline bool Bitboard::test(Bitboard rhs) const
 {
-#if defined(USE_SSE41)
+#if defined(USE_SSE41) && !defined(IS_ARM)
 	return !_mm_testz_si128(m, rhs.m);
 #else
 	return (*this & rhs);
@@ -214,7 +214,7 @@ template <int n>
 inline u64 Bitboard::extract64() const
 {
 	static_assert(n == 0 || n == 1, "");
-#if defined(USE_SSE41)
+#if defined(USE_SSE41) && !defined(IS_ARM)
 	return (u64)(_mm_extract_epi64(m, n));
 #else
 	return p[n];
@@ -225,7 +225,7 @@ template <int n>
 inline Bitboard& Bitboard::insert64(u64 u)
 {
 	static_assert(n == 0 || n == 1, "");
-#if defined(USE_SSE41)
+#if defined(USE_SSE41) && !defined(IS_ARM)
 	m = _mm_insert_epi64(m, u, n);
 #else
 	p[n] = u;
@@ -235,7 +235,7 @@ inline Bitboard& Bitboard::insert64(u64 u)
 
 inline bool Bitboard::operator == (const Bitboard& rhs) const
 {
-#ifdef USE_SSE41
+#if defined(USE_SSE41) && !defined(IS_ARM)
 	// 以下のようにすると2命令で済むらしい。
 	// testing equality between two __m128i variables
 	// cf.http://stackoverflow.com/questions/26880863/sse-testing-equality-between-two-m128i-variables

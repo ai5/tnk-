@@ -19,11 +19,23 @@
 #elif defined(USE_AVX2)
 #include <immintrin.h>
 #elif defined(USE_SSE42)
+#if defined(IS_ARM)
+#include "SSE2NEON.h"
+#else
 #include <nmmintrin.h>
+#endif
 #elif defined(USE_SSE41)
+#if defined(IS_ARM)
+#include "SSE2NEON.h"
+#else
 #include <smmintrin.h>
+#endif
 #elif defined (USE_SSE2)
+#if defined(IS_ARM)
+#include "SSE2NEON.h"
+#else
 #include <emmintrin.h>
+#endif
 #else
 #if defined (__GNUC__) 
 #include <mm_malloc.h> // for _mm_alloc()
@@ -96,7 +108,12 @@ inline uint64_t PEXT64(uint64_t a, uint64_t b) { return pext(a, b); }
 //     POPCNT(SSE4.2の命令)
 // ----------------------------
 
-#ifdef USE_SSE42
+#if defined(IS_ARM)
+
+#define POPCNT32(a) __builtin_popcount(a)
+#define POPCNT64(a) __builtin_popcountll(a)
+
+#elif defined(USE_SSE42)
 
 // for SSE4.2
 #include <nmmintrin.h>
@@ -158,7 +175,7 @@ FORCE_INLINE int MSB32(uint32_t v) { ASSERT_LV3(v != 0); unsigned long index; _B
 FORCE_INLINE int MSB64(uint64_t v) { ASSERT_LV3(v != 0); return uint32_t(v >> 32) ? 32 + MSB32(uint32_t(v >> 32)) : MSB32(uint32_t(v)); }
 #endif
 
-#elif defined(__GNUC__) && ( defined(__i386__) || defined(__x86_64__) )
+#elif defined(__GNUC__) && ( defined(__i386__) || defined(__x86_64__) || defined(__ANDROID__))
 
 FORCE_INLINE int LSB32(const u32 v) { ASSERT_LV3(v != 0); return __builtin_ctzll(v); }
 FORCE_INLINE int LSB64(const u64 v) { ASSERT_LV3(v != 0); return __builtin_ctzll(v); }

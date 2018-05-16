@@ -62,6 +62,7 @@
 #endif
 
 #include "arm_neon.h"
+#include <mm_malloc.h> // for _mm_alloc()
 
 /*******************************************************/
 /* MACRO for shuffle parameter for _mm_shuffle_ps().   */
@@ -553,6 +554,8 @@ FORCE_INLINE __m128i _mm_shufflehi_epi16_function(__m128i a)
 // Shifts the 4 signed 32 - bit integers in a right by count bits while shifting in the sign bit.  https://msdn.microsoft.com/en-us/library/z1939387(v=vs.100).aspx
 #define _mm_srai_epi32( a, imm ) vshrq_n_s32(a, imm)
 
+#define _mm_srai_epi16( a, imm ) vshrq_n_s16(a, imm)
+
 // Shifts the 128 - bit value in a right by imm bytes while shifting in zeros.imm must be an immediate. https://msdn.microsoft.com/en-us/library/305w28yz(v=vs.100).aspx
 //#define _mm_srli_si128( a, imm ) (__m128i)vmaxq_s8((int8x16_t)a, vextq_s8((int8x16_t)a, vdupq_n_s8(0), imm))
 #define _mm_srli_si128( a, imm ) (__m128i)vextq_s8((int8x16_t)a, vdupq_n_s8(0), (imm))
@@ -607,6 +610,11 @@ FORCE_INLINE __m128i _mm_sub_epi32(__m128i a, __m128i b)
 	return vsubq_s32(a, b);
 }
 
+FORCE_INLINE __m128i _mm_sub_epi64(__m128i a, __m128i b)
+{
+	return vsubq_s64(a, b);
+}
+
 // Adds the four single-precision, floating-point values of a and b. https://msdn.microsoft.com/en-us/library/vstudio/c9848chc(v=vs.100).aspx
 FORCE_INLINE __m128 _mm_add_ps(__m128 a, __m128 b)
 {
@@ -619,10 +627,20 @@ FORCE_INLINE __m128i _mm_add_epi32(__m128i a, __m128i b)
 	return vaddq_s32(a, b);
 }
 
+FORCE_INLINE __m128i _mm_add_epi64(__m128i a, __m128i b)
+{
+	return vaddq_s64(a, b);
+}
+
 // Adds the 8 signed or unsigned 16-bit integers in a to the 8 signed or unsigned 16-bit integers in b. https://msdn.microsoft.com/en-us/library/fceha5k4(v=vs.100).aspx
 FORCE_INLINE __m128i _mm_add_epi16(__m128i a, __m128i b)
 {
 	return (__m128i)vaddq_s16((int16x8_t)a, (int16x8_t)b);
+}
+
+FORCE_INLINE __m128i _mm_sub_epi16(__m128i a, __m128i b)
+{
+	return (__m128i)vsubq_s16((int16x8_t)a, (int16x8_t)b);
 }
 
 // Multiplies the 8 signed or unsigned 16-bit integers from a by the 8 signed or unsigned 16-bit integers from b. https://msdn.microsoft.com/en-us/library/vstudio/9ks1472s(v=vs.100).aspx
@@ -703,6 +721,11 @@ FORCE_INLINE __m128i _mm_max_epi32(__m128i a, __m128i b )
 FORCE_INLINE __m128i _mm_min_epi32(__m128i a, __m128i b ) 
 {
 	return vminq_s32(a,b);
+}
+
+FORCE_INLINE __m128i _mm_max_epi8(__m128i a, __m128i b ) 
+{
+	return vmaxq_s8(a,b);
 }
 
 // Multiplies the 8 signed 16-bit integers from a by the 8 signed 16-bit integers from b. https://msdn.microsoft.com/en-us/library/vstudio/59hddw1d(v=vs.100).aspx
@@ -1007,7 +1030,7 @@ FORCE_INLINE __m128i _mm_insert_epi64(__m128i a, int64_t b, const int ndx)
 	
 	return A;
 }
-
+#if 0
 FORCE_INLINE __m128i _mm_slli_epi64 (__m128i a, int count)
 {
 	return 	(__m128i)vshlq_n_s64((int64x2_t)a, count);
@@ -1018,11 +1041,11 @@ FORCE_INLINE __m128i _mm_slli_epi16 (__m128i a, int count)
 	return 	(__m128i)vshlq_n_s16((int16x8_t)a, count);
 }
 
-
 FORCE_INLINE __m128i _mm_srli_epi64 (__m128i a, int count)
 {
 	return (__m128i)vshrq_n_u64((uint64x2_t)a, count);
 }
+#endif
 
 FORCE_INLINE __m128i _mm_cmpgt_epi8 (__m128i a, __m128i b)
 {
@@ -1042,7 +1065,9 @@ FORCE_INLINE __m128i _mm_min_epu16(__m128i a, __m128i b)
 
 FORCE_INLINE __m128i _mm_set_epi8 (char b15, char b14,    char b13, char b12,   char b11, char b10,   char b9, char b8,   char b7, char b6,   char b5, char b4,   char b3, char b2,   char b1, char b0)
 {
-	int8_t __attribute__((aligned(16))) data[16] = { b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15 };
+	int8_t __attribute__((aligned(16))) data[16] = {
+	    (int8_t)b0, (int8_t)b1, (int8_t)b2, (int8_t)b3, (int8_t)b4, (int8_t)b5, (int8_t)b6, (int8_t)b7,
+	    (int8_t)b8, (int8_t)b9, (int8_t)b10, (int8_t)b11, (int8_t)b12, (int8_t)b13,(int8_t) b14, (int8_t)b15 };
 	
 	return (__m128i)vld1q_s8(data);
 }
@@ -1168,5 +1193,15 @@ FORCE_INLINE __m128i _mm_cvtepi16_epi32( __m128i a)
 
 
 #define _mm_empty()
+
+FORCE_INLINE __m128i _mm_madd_epi16(__m128i a, __m128i b)
+{
+  int32x4_t pl = vmull_s16(vget_low_s16(a),  vget_low_s16(b));
+  int32x4_t ph = vmull_s16(vget_high_s16(a), vget_high_s16(b));
+  int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
+  int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
+  return vcombine_s32(rl, rh);
+}
+
 
 #endif
