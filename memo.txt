@@ -1,4 +1,63 @@
 
+
+■ハッシュサイズ３２MBのベンチ結果 (bench 32)
+
+INFOの出力に違い？トータルノード数は同じ => PC版ではAndroid版の最後のINFO STRINGが出力されていないだけっぽい
+
+・tnk-NNUE sse42 releaes ver
+
+info depth 17 seldepth 35 score cp -1313 nodes 4533517 nps 375508 hashfull 785 time 12073 pv 8d7d P*7f 3b3a 4a5b+ 4e5g+ 1f1e 5g6g B*5a B*3c 5a3c+ 2b3c N*1f 2d1c N*2e 1c2b 2e3c+ 2b3c B*5a B*4b 5a4b+ 3a4b 7g6g B*7i 8h8g 5i5e+ G*7h 4b5b 7h7i 7d5d N*2e 3c4b B*3c 4b5c 3c5e+ 5d5e
+bestmove 8d7d ponder P*7f
+
+info depth 17 seldepth 33 score cp -1126 lowerbound nodes 4586928 nps 378303 hashfull 754 time 12125 pv N*4d
+bestmove N*4d ponder 5b5c
+
+info depth 17 seldepth 33 score cp -5670 nodes 1437300 nps 431492 hashfull 275 time 3331 pv G*1c 4b3b 2b3b 4c3b+ N*1g 1i1g 1c2d G*2b 6f2b 3b2b 1b2b 2i3i 2d3e 3f3e G*3b N*3d 2b1c R*8b S*2c B*2b 1c2d 2b1a+ 7c6e 1a2a
+bestmove G*1c ponder 4b3b
+
+===========================
+Total time (ms) : 27633
+Nodes searched  : 10598940
+Nodes/second    : 383560
+
+
+・ARM 64 v8a
+info depth 17 seldepth 35 score cp -1313 nodes 4533517 nps 49655 hashfull 785 time 91300 pv 8d7d P*7f 3b3a 4a5b+ 4e5g+ 1f1e 5g6g B*5a B*3c 5a3c+ 2b3c N*1f 2d1c N*2e 1c2b 2e3c+ 2b3c B*5a B*4b 5a4b+ 3a4b 7g6g B*7i 8h8g 5i5e+ G*7h 4b5b 7h7i 7d5d N*2e 3c4b B*3c 4b5c 3c5e+ 5d5e
+bestmove 8d7d ponder P*7f
+
+info depth 17 seldepth 33 score cp -1126 lowerbound nodes 4586928 nps 50500 hashfull 754 time 90829 pv N*4d
+info depth 17 seldepth 33 score cp -1028 nodes 4628123 nps 50564 hashfull 760 time 91530 pv N*4d 5b5c S*4b 2d4b 6f5g G*7i 6i5h S*7h L*4i 2i2h+ 4i4h 2g3g L*4f 3g4h 5g4h L*5f 6h5g 5f5g+ 5h5g P*4e L*3f 5c4d G*3e 4d3c P*3d 3c2c 5g5f 4e4f 3d3c+ 4b3c
+bestmove N*4d ponder 5b5c
+
+info depth 17 seldepth 33 score cp -5670 nodes 1437300 nps 57372 hashfull 275 time 25052 pv G*1c 4b3b 2b3b 4c3b+ N*1g 1i1g 1c2d G*2b 6f2b 3b2b 1b2b 2i3i 2d3e 3f3e G*3b N*3d 2b1c R*8b S*2c B*2b 1c2d 2b1a+ 7c6e 1a2a
+bestmove G*1c ponder 4b3b
+
+===========================
+Total time (ms) : 207896
+Nodes searched  : 10598940
+Nodes/second    : 50981
+info depth 17 seldepth 35 
+
+
+
+
+・ARM eabiv7a
+info depth 17 seldepth 35 score cp -1313 nodes 4533517 nps 30962 hashfull 785 time 146419 pv 8d7d P*7f 3b3a 4a5b+ 4e5g+ 1f1e 5g6g B*5a B*3c 5a3c+ 2b3c N*1f 2d1c N*2e 1c2b 2e3c+ 2b3c B*5a B*4b 5a4b+ 3a4b 7g6g B*7i 8h8g 5i5e+ G*7h 4b5b 7h7i 7d5d N*2e 3c4b B*3c 4b5c 3c5e+ 5d5e
+bestmove 8d7d ponder P*7f
+
+info depth 17 seldepth 33 score cp -1126 lowerbound nodes 4586928 nps 30815 hashfull 754 time 148851 pv N*4d
+info depth 17 seldepth 33 score cp -1028 nodes 4628123 nps 30845 hashfull 760 time 150042 pv N*4d 5b5c S*4b 2d4b 6f5g G*7i 6i5h S*7h L*4i 2i2h+ 4i4h 2g3g L*4f 3g4h 5g4h L*5f 6h5g 5f5g+ 5h5g P*4e L*3f 5c4d G*3e 4d3c P*3d 3c2c 5g5f 4e4f 3d3c+ 4b3c
+bestmove N*4d ponder 5b5
+
+
+info depth 17 seldepth 33 score cp -5670 nodes 1437300 nps 34825 hashfull 275 time 41271 pv G*1c 4b3b 2b3b 4c3b+ N*1g 1i1g 1c2d G*2b 6f2b 3b2b 1b2b 2i3i 2d3e 3f3e G*3b N*3d 2b1c R*8b S*2c B*2b 1c2d 2b1a+ 7c6e 1a2a
+bestmove G*1c ponder 4b3b
+
+===========================
+Total time (ms) : 337733
+Nodes searched  : 10598940
+Nodes/second    : 31382
+
 ■ベンチ結果
 
 自前ビルド版とリリース版で結果は同じ

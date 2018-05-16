@@ -346,7 +346,7 @@
 // 学習絡みのオプション
 #define USE_SFEN_PACKER
 // 学習機能を有効にするオプション。
-#define EVAL_LEARN
+// #define EVAL_LEARN
 
 // 定跡生成絡み
 #define ENABLE_MAKEBOOK_CMD

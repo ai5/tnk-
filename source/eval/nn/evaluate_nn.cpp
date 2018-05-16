@@ -201,12 +201,12 @@ struct EvaluateHashTable : HashTable<ScoreKeyValue, 0x800000> {};
 struct EvaluateHashTable : HashTable<ScoreKeyValue, 0x4000000> {};
 #endif
 
-EvaluateHashTable g_evalTable;
+EvaluateHashTable* g_evalTable = new EvaluateHashTable;
 
 // prefetchする関数も用意しておく。
 void prefetch_evalhash(const Key key) {
   constexpr auto mask = ~((u64)0x1f);
-  prefetch((void*)((u64)g_evalTable[key] & mask));
+  prefetch((void*)((u64)(*g_evalTable)[key] & mask));
 }
 #endif
 
@@ -259,7 +259,7 @@ Value evaluate(const Position& pos) {
 #if defined(USE_EVAL_HASH)
   // evaluate hash tableにはあるかも。
   const Key key = pos.state()->key();
-  ScoreKeyValue entry = *g_evalTable[key];
+  ScoreKeyValue entry = *(*g_evalTable)[key];
   entry.decode();
   if (entry.key == key) {
     // あった！
@@ -273,7 +273,7 @@ Value evaluate(const Position& pos) {
   entry.key = key;
   entry.score = score;
   entry.encode();
-  *g_evalTable[key] = entry;
+  *(*g_evalTable)[key] = entry;
 #endif
 
   return score;

@@ -18,19 +18,19 @@ include $(CLEAR_VARS)
 
 ARCH_DEF := -DTARGET_ARCH="$(TARGET_ARCH_ABI)"
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-  ARCH_DEF += -DIS_64BIT -DIS_ARM -DUSE_MAKEFILE -DYANEURAOU_2017_EARLY_ENGINE
+  ARCH_DEF += -DIS_64BIT -DIS_ARM -DUSE_MAKEFILE -DNNUE_ENGINE
 endif
 
 ifeq ($(TARGET_ARCH_ABI),x86_64)
-  ARCH_DEF += -DUSE_SSE42 -DUSE_MAKEFILE  -DYANEURAOU_2017_EARLY_ENGINE -msse4.2
+  ARCH_DEF += -DUSE_SSE42 -DUSE_MAKEFILE  -DNNUE_ENGINE -msse4.2
 endif
 
 ifeq ($(TARGET_ARCH_ABI),x86)
-  ARCH_DEF += -DUSE_MAKEFILE  -DYANEURAOU_2017_EARLY_ENGINE
+  ARCH_DEF += -DUSE_MAKEFILE  -DNNUE_ENGINE
 endif
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-  ARCH_DEF += -DIS_ARM -DUSE_MAKEFILE -DYANEURAOU_2017_EARLY_ENGINE
+  ARCH_DEF += -DIS_ARM -DUSE_MAKEFILE -DNNUE_ENGINE
 endif
 
 LOCAL_MODULE    := YaneuraOu-$(TARGET_ARCH_ABI)
@@ -45,11 +45,14 @@ LOCAL_CPP_FEATURES += exceptions rtti
 LOCAL_SRC_FILES := ../source/bitboard.cpp ../source/misc.cpp ../source/movegen.cpp ../source/position.cpp \
            ../source/shogi.cpp ../source/thread.cpp ../source/tt.cpp ../source/usi.cpp \
            ../source/eval/evaluate.cpp ../source/eval/evaluate_io.cpp \
-           ../source/eval/evaluate_no_eval.cpp ../source/eval/evaluate_bona_piece.cpp \
-           ../source/eval/kppt/evaluate_kppt.cpp \
-           ../source/eval/kppt/evaluate_kppt_learner.cpp \
-           ../source/eval/kpp_kkpt/evaluate_kpp_kkpt.cpp \
-           ../source/eval/kpp_kkpt/evaluate_kpp_kkpt_learner.cpp \
+           ../source/eval/evaluate_bona_piece.cpp \
+           ../source/eval/nn/evaluate_nn.cpp \
+           ../source/eval/nn/evaluate_nn_learner.cpp \
+           ../source/eval/nn/nn_test_command.cpp \
+           ../source/eval/nn/features/half_kp.cpp \
+           ../source/eval/nn/features/half_relative_kp.cpp \
+           ../source/eval/nn/features/k.cpp \
+           ../source/eval/nn/features/p.cpp \
            ../source/extra/bitop.cpp ../source/extra/entering_king_win.cpp \
            ../source/extra/book/book.cpp \
            ../source/extra/book/apery_book.cpp \
@@ -60,7 +63,7 @@ LOCAL_SRC_FILES := ../source/bitboard.cpp ../source/misc.cpp ../source/movegen.c
            ../source/extra/see.cpp \
            ../source/extra/test_cmd.cpp ../source/extra/benchmark.cpp \
            ../source/extra/timeman.cpp \
-           ../source/engine/2017-early-engine/2017-early-search.cpp \
+           ../source/engine/2018-otafuku-engine/2018-otafuku-search.cpp \
            ../source/engine/user-engine/user-search.cpp
 
 include $(BUILD_EXECUTABLE)
