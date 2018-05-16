@@ -1,4 +1,21 @@
 
+■SIMDテスト
+
+NNのコードをNEONを使うようにしたときのベンチ
+
+若干速い？
+
+・arm64-v8a
+
+info depth 17 seldepth 33 score cp -5670 nodes 1437300 nps 58353 hashfull 275 time 24631 pv G*1c 4b3b 2b3b 4c3b+ N*1g 1i1g 1c2d G*2b 6f2b 3b2b 1b2b 2i3i 2d3e 3f3e G*3b N*3d 2b1c R*8b S*2c B*2b 1c2d 2b1a+ 7c6e 1a2a
+bestmove G*1c ponder 4b3b
+
+===========================
+Total time (ms) : 201531
+Nodes searched  : 10598940
+Nodes/second    : 52592
+
+
 
 ■ハッシュサイズ３２MBのベンチ結果 (bench 32)
 
