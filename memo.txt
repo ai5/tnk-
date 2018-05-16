@@ -1,0 +1,39 @@
+
+■ベンチ結果
+
+自前ビルド版とリリース版で結果は同じ
+
+・tnk-NNUE sse42 vc ver 
+
+info depth 17 seldepth 33 score cp -1243 nodes 4081662 nps 338165 hashfull 35 time 12070 pv 8d7d P*7f 3b3a 4a5b B*3c 1f1e 3c5e B*5a G*3c S*2e 2d1c 1e1d 1c1b 1d1c+ 1b2a 5d4b+ 1a1c 4b3a 2a3a 1i1c+ 2b1c
+bestmove 8d7d ponder P*7f
+
+
+info depth 17 seldepth 34 score cp -540 nodes 3567579 nps 333231 hashfull 35 time 10706 pv N*4d 5b5c S*4b 2d4b 6f5g G*7i 6i5h S*7h L*4i 2g3g 6h7h P*5f L*4f P*4e 5d4e 2f2h+ S*4h 3g4h 5g4h 5c4d 4e5f 4d3e 4f4b+ 7i7h 5f7h N*6f 5h5g 6f7h+
+bestmove N*4d ponder 5b5c
+
+
+info depth 17 seldepth 35 score cp -5671 nodes 3099662 nps 364152 hashfull 18 time 8512 pv N*3a 4b3a G*3c 3g3h S*3g 3h3g 3i5g+ G*3h P*3d 3a2a 1b2a R*4a 2a1b 4c3d+ 3c3d S*2c 2b2c 2d2c+ 1b2c
+bestmove N*3a ponder 4b3a
+
+===========================
+Total time (ms) : 31310
+Nodes searched  : 10748903
+Nodes/second    : 343305
+
+・tnk-NNUE sse42 releaes ver
+
+info depth 17 seldepth 33 score cp -1243 nodes 4081662 nps 363104 hashfull 35 time 11241 pv 8d7d P*7f 3b3a 4a5b B*3c 1f1e 3c5e B*5a G*3c S*2e 2d1c 1e1d 1c1b 1d1c+ 1b2a 5d4b+ 1a1c 4b3a 2a3a 1i1c+ 2b1c
+bestmove 8d7d ponder P*7f
+
+info depth 17 seldepth 34 score cp -540 nodes 3567579 nps 369965 hashfull 35 time 9643 pv N*4d 5b5c S*4b 2d4b 6f5g G*7i 6i5h S*7h L*4i 2g3g 6h7h P*5f L*4f P*4e 5d4e 2f2h+ S*4h 3g4h 5g4h 5c4d 4e5f 4d3e 4f4b+ 7i7h 5f7h N*6f 5h5g 6f7h+
+bestmove N*4d ponder 5b5c
+
+
+info depth 17 seldepth 35 score cp -5671 nodes 3099662 nps 410388 hashfull 18 time 7553 pv N*3a 4b3a G*3c 3g3h S*3g 3h3g 3i5g+ G*3h P*3d 3a2a 1b2a R*4a 2a1b 4c3d+ 3c3d S*2c 2b2c 2d2c+ 1b2c
+bestmove N*3a ponder 4b3a
+
+===========================
+Total time (ms) : 28443
+Nodes searched  : 10748903
+Nodes/second    : 377910
